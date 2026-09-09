@@ -28,15 +28,12 @@ function App() {
   const validate = () => {
     const newErrors = {};
 
-    // Required Fields Validation
     if (!taskName || taskName.trim() === "") {
       newErrors.taskName = "Task name is required.";
     } else if (taskName.trim().length < 5) {
       // Field Length Validation
       newErrors.taskName = "Task name must be at least 5 characters.";
     }
-
-    // Uniqueness Validation (task name must be unique, excluding itself when updating)
     const duplicate = tasks.find(
       (t) =>
         t.taskName.trim().toLowerCase() === taskName.trim().toLowerCase() &&
@@ -45,8 +42,6 @@ function App() {
     if (taskName.trim() !== "" && duplicate) {
       newErrors.taskName = "Task name already exists. Please use a unique name.";
     }
-
-    // Options Validation (priority level must be one of the predefined options 1-10)
     const validPriorities = Array.from({ length: 10 }, (_, i) => i + 1);
     if (!validPriorities.includes(Number(priorityLevel))) {
       newErrors.priorityLevel = "Priority level should be at least 1 and max of 10.";
@@ -70,7 +65,6 @@ function App() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Unique ID Generation - combines timestamp + random string
   const generateUniqueId = () => {
     return `TASK-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
   };
@@ -90,7 +84,7 @@ function App() {
     if (!validate()) return;
 
     if (editId !== null) {
-      // Update existing task
+
       setTasks(
         tasks.map((t) =>
           t.id === editId
